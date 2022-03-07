@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <button>btn</button>
+    <script>
+      let myInterceptor = axios.interceptors.request.use(
+        function (config) {
+          console.log("请求拦截");
+          return config;
+        },
+        function (error) {
+          // Do something with request error
+          return Promise.reject(error);
+        }
+      );
+
+      // Add a response interceptor
+      axios.interceptors.response.use(
+        function (response) {
+          console.log("返回数据啦");
+          return response.data;
+        },
+        function (error) {
+          return Promise.reject(error);
+        }
+      );
+      //   移除拦截器
+      axios.interceptors.request.eject(myInterceptor);
+      let btn = document.querySelector("button");
+      btn.addEventListener("click", resquest);
+      function resquest() {
+        axios
+          .get(" http://localhost:3000/posts?ID=12345")
+          .then(function (response) {
+            // handle success
+            console.log(response);
+          })
+          .catch(function (error) {
+            // handle error
+            console.log(error);
+          })
+          .then(function () {
+            // always executed
+          });
+
+        // Want to use async/await? Add the `async` keyword to your outer function/method.
+        async function getUser() {
+          try {
+            const response = await axios.get(
+              "http://localhost:3000/posts?id=1"
+            );
+            console.log(response);
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      }
+    </script>
+    <script>
+      //   function sum(arr) {
+      //     return arr.reduce((pre, cur) => pre + cur);
+      //   }
+      //   function sub(v) {
+      //     return v + 1000;
+      //   }
+      //   let fn = _.flow([sum, sub]);
+      //   console.log(fn([1, 2, 3]));
+      // [request、ajax、response]
+    </script>
+  </body>
+</html>
